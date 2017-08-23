@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-module
   type="WEB"
-  name="DocumentManageSystem"
-  id="myeclipse.1503467878507"
-  context-root="/DocumentManageSystem"
+  name="DocumentManageSystemPlus"
+  id="myeclipse.1503475116979"
+  context-root="/DocumentManageSystemPlus"
   j2ee-spec="5.0"
-  archive="DocumentManageSystem.war">
+  archive="DocumentManageSystemPlus.war">
   <attributes>
     <attribute name="webrootdir" value="WebRoot" />
   </attributes>

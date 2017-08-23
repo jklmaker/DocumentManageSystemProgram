@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -21,6 +21,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    This is my JSP page. <br>
+    <form name="logForm" action="servlet/logServlet" method="post" >
+    	<table>
+	    	<tr>
+	    		<td>用户名:<input type="text" name="name" /></td>
+	    		<td>密码:<input type="password" name="password" /></td>
+	    		<td><input type="submit" value="登录" /></td>
+	    	</tr>
+    	</table>
+    </form>
+    <a href="regist.jsp"><input type="button" value="注册" /></a>
   </body>
 </html>

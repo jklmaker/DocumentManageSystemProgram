@@ -1,9 +1,10 @@
 package entity;
+
 /**
  * 抽象的User类(表明用户是写者还是管理员)
  *
  */
-public abstract class user {
+public class user {
 
 	private int userType;		//0为写者，1为管理员
 	
@@ -15,8 +16,34 @@ public abstract class user {
 	private String inviter;		//推荐人(选填)
 	private String industryBranch;	//行业分会
 	private String specialCommittee;	//专委会
+	private String password;	//密码
 	
+	public user() {
+		
+	}
 	
+	//带参数的构造方法(没有userType和inviter)
+	public user(String name, String sex, String birthday, String address,
+			String telephone, String industryBranch, String specialCommittee,
+			String password) {
+		this.name = name;
+		this.sex = sex;
+		this.birthday = birthday;
+		this.address = address;
+		this.telephone = telephone;
+		this.industryBranch = industryBranch;
+		this.specialCommittee = specialCommittee;
+		this.password = password;
+	}
+
+
+
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public int getUserType() {
 		return userType;
 	}
@@ -78,5 +105,4 @@ public abstract class user {
 				"家庭住址:"+this.getAddress()+"联系方式:"+this.getTelephone()
 				+"推荐人:"+str+"行业分会:"+this.getIndustryBranch()+"专委会:"+this.getSpecialCommittee();
 	}
-	
 }
