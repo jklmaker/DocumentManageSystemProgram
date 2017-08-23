@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'managerHome.jsp' starting page</title>
+    <title>My JSP 'informationMaintenance.jsp' starting page</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -23,13 +23,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    <h1>管理员主界面</h1>
+    <h1>信息维护</h1>
     <hr>
-    <jsp:useBean  id="user" class="entity.user" scope="session"/>
-    <p>用户名：<jsp:getProperty name="user" property="name"/></p>
-    <hr>
-    <a href="proposalQuery.jsp">提案查询</a>
-    <a href="proposalDefine.jsp">提案编制</a>
-    <a href="informationMaintenance.jsp">信息维护</a>
+    
   </body>
 </html>

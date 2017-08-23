@@ -1,8 +1,11 @@
 package util;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import entity.author;
+import entity.proposal;
 import entity.user;
 
 public class dbHelper {
@@ -42,6 +45,58 @@ public class dbHelper {
 			preStmt.setString(8, u.getIndustryBranch());		//industryBranch
 			preStmt.setString(9, u.getSpecialCommittee());		//specialCommittee
 			preStmt.setString(10, u.getPassword());				//password
+			preStmt.executeUpdate();
+			
+			preStmt.executeBatch();
+			conn.commit();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+			
+		}finally{
+			preStmt.close();
+		}
+	}
+	
+	public int getMaxProposalId() throws ClassNotFoundException, SQLException {
+		int maxProposalId = 0;
+		String sql = "select max(proposalId) from proposal";
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		Connection conn = this.getConnection();
+		conn.setAutoCommit(false);
+		
+		stmt = conn.createStatement();
+		rs = stmt.executeQuery(sql);
+		if(rs != null) {
+			rs.next();
+			maxProposalId = rs.getInt(1);
+		}
+		return maxProposalId;
+	}
+	
+	public void addProposal(proposal p) throws SQLException {
+		String userSQL1 = "insert into proposal"+"(proposalId,title,author,deadline,state,agree,disagree,content) values(?,?,?,?,?,?,?,?)";
+		PreparedStatement preStmt = null;
+		Statement stmt = null;
+		
+		try{
+			Connection conn = this.getConnection();
+			conn.setAutoCommit(false);
+			
+			preStmt = conn.prepareStatement(userSQL1);
+			
+			preStmt.setInt(1, p.getProposalId());
+			preStmt.setString(2, p.getTitle());
+			preStmt.setString(3, p.getAuthor());
+			preStmt.setString(4, p.getDeadline());
+			preStmt.setInt(5, p.getState());
+			preStmt.setInt(6, p.getAgree());
+			preStmt.setInt(7, p.getDisagree());
+			preStmt.setString(8, p.getContent());
+
 			preStmt.executeUpdate();
 			
 			preStmt.executeBatch();
@@ -96,30 +151,62 @@ public class dbHelper {
 		return u;
 	}
 	
+	public List<proposal> listProposal() throws SQLException{
+		List<proposal> list = new ArrayList<proposal>();
+		Statement stmt = null;
+		ResultSet rs = null;
+		String sql = "select * from proposal";
+		
+		try{
+			//设置基本信息
+			Connection conn = this.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				proposal p = new proposal();
+				p.setAgree(rs.getInt("agree"));
+				p.setDisagree(rs.getInt("disagree"));
+				p.setAuthor(rs.getString("author"));
+				p.setContent(rs.getString("content"));
+				p.setDeadline(rs.getString("deadline"));
+				p.setProposalId(rs.getInt("proposalId"));
+				p.setState(rs.getInt("state"));
+				p.setTitle(rs.getString("title"));
+				
+				list.add(p);
+				
+//				Product product = new Product();
+//				/*person.setId(rs.getInt("id"));
+//				person.setAge(rs.getInt("age"));
+//				person.setName(rs.getString("name"));*/
+//				product.setPname(rs.getString("pname"));
+//				product.setPrice(rs.getInt("price"));
+//				product.setStoreQuantity(rs.getInt("quantity"));
+//				product.setType(rs.getString("type"));
+//				product.setPid(rs.getInt("pid"));
+//				
+//				list.add(product);	
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}	
+		return list;	
+	}
+	
 	public static void main(String[] args) {
 		dbHelper db = new dbHelper();
 		System.out.println("===");
-		
-		user u1 = new author();
-		u1.setName("张三");
-		u1.setSex("男");
-		u1.setBirthday("1997-02-21");
-		u1.setAddress("北京");
-		u1.setTelephone("888888");
-		u1.setInviter("李四");
-		u1.setIndustryBranch("AAA");
-		u1.setSpecialCommittee("BBB");
-		u1.setUserType(1);
-		u1.setPassword("123456");
-		
-//		try {
-//			db.addUser(u1);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-		
-		System.out.println(u1.toString());
-		System.out.println(db.showQueryInfo("张三"));
-		
+
+		try {
+			System.out.println(db.getMaxProposalId());
+			System.out.println(db.listProposal().size());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

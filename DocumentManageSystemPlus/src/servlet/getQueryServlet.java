@@ -2,23 +2,26 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.currentProposal;
+
 import util.dbHelper;
 
-import entity.manager;
-import entity.user;
+import entity.proposal;
 
-public class logServlet extends HttpServlet {
+public class getQueryServlet extends HttpServlet {
 
 	/**
 	 * Constructor of the object.
 	 */
-	public logServlet() {
+	public getQueryServlet() {
 		super();
 	}
 
@@ -61,21 +64,22 @@ public class logServlet extends HttpServlet {
 
 		request.setCharacterEncoding("utf-8");	//设置编码
 		
-		String name = request.getParameter("name");		//接收从index.jsp传过来的用户名和密码
-		String password = request.getParameter("password");
-		
 		dbHelper db = new dbHelper();
-		
-		//登录成功：当且仅当数据库中有这个用户的信息且这个用户的密码与传入的相同
-		if(db.showQueryInfo(name)!=null && db.showQueryInfo(name).getPassword().equals(password)) {
-			//把注册成功的用户名保存在session中
-			user u = db.showQueryInfo(name);
+		currentProposal cp = null;
+		List<proposal> list = null;
+		try {
+			list = db.listProposal();
+			cp = new currentProposal(list.size(), list);
+			System.out.println(list.size());
+			request.getSession().setAttribute("nowProposal", cp);
 			
-			request.getSession().setAttribute("user", u);
-			response.sendRedirect("../managerHome.jsp");	//登陆成功，重定向到管理员主页面
-		}else{
-			response.sendRedirect("../logFail.jsp");	//登陆失败，重定向到注册失败提示页面
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		
+		response.sendRedirect("../proposalQuery.jsp");
+//		request.getSession().setAttribute("user", u);
+//		response.sendRedirect("../regSuccess.jsp");
 	}
 
 	/**

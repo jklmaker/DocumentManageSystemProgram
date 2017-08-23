@@ -12,7 +12,10 @@ public class proposal {
 	String content;		//提案内容
 	
 	public proposal() {
-		
+		state = 0;
+		agree = 0;
+		disagree = 0;
+		deadline = "暂无";
 	}
 	
 	public proposal(int proposalId, String title, String author, String content) {
