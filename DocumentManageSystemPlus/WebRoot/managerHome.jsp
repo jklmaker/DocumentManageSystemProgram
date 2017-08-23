@@ -26,6 +26,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <h1>管理员主界面</h1>
     <hr>
     <jsp:useBean  id="user" class="entity.user" scope="session"/>
-    用户名：<jsp:getProperty name="user" property="name"/>
+    <p>用户名：<jsp:getProperty name="user" property="name"/></p>
+    <hr>
+    
   </body>
 </html>
