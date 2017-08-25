@@ -1,3 +1,4 @@
+<%@page import="util.dbHelper"%>
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
 <%
 String path = request.getContextPath();
@@ -9,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'managerHome.jsp' starting page</title>
+    <title>My JSP 'deleteFinal.jsp' starting page</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -21,6 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 
   </head>
+  
   <%
   	request.setCharacterEncoding("utf-8");
   	Cookie[] cookies = request.getCookies();
@@ -30,20 +32,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            {
               if(c.getName().equals("proposalId"))
               {
+              	   new dbHelper().delProposal(Integer.valueOf(c.getValue()));
                    c.setMaxAge(0); 			//设置Cookie失效
                    response.addCookie(c); 	//重新保存
               }
            }
       }
    %>
+  
   <body>
-    <h1>管理员主界面</h1>
+    <h1>提案已被撤销</h1>
     <hr>
-    <jsp:useBean  id="user" class="entity.user" scope="session"/>
-    <p>用户名：<jsp:getProperty name="user" property="name"/></p>
-    <hr>
-    <a href="proposalQuery.jsp">提案查询</a>
-    <a href="proposalDefine.jsp">提案编制</a>
-    <a href="informationMaintenance.jsp">信息维护</a>
+    <a href="proposalQuery.jsp"><input type="button" value="回到提案查询页面"/></a><br>
+    <a href="managerHome.jsp"><input type="button" value="回到主页面"/></a><br>
   </body>
 </html>

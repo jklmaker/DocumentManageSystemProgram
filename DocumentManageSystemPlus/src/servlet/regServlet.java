@@ -2,9 +2,11 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +17,9 @@ import entity.user;
 
 public class regServlet extends HttpServlet {
 
+	private String regFail1 = "reg fail.some of elements are empty.";
+	private String regFail2 = "reg fail.the username you input is already existing in Database.";
+	
 	/**
 	 * Constructor of the object.
 	 */
@@ -80,16 +85,24 @@ public class regServlet extends HttpServlet {
 		}
 		
 		dbHelper db = new dbHelper();
-		if(name==null || name.length()==0 || password==null || password.length()==0 || sex==null || sex.length()==0 || birthday==null || birthday.length()==0 || address==null || address.length()==0 || telephone==null || telephone.length()==0 || industryBranch==null || industryBranch.length()==0 || specialCommittee==null || specialCommittee.length()==0 ||db.showQueryInfo(name) != null) {
-			//注册失败，该用户已存在
-			//跳转至失败页面
-			response.sendRedirect("../regFail.jsp");
+		if(name==null || name.length()==0 || password==null || password.length()==0 || sex==null || sex.length()==0 || birthday==null || birthday.length()==0 || address==null || address.length()==0 || telephone==null || telephone.length()==0 || industryBranch==null || industryBranch.length()==0 || industryBranch.equals("请选择") || specialCommittee==null || specialCommittee.length()==0 || specialCommittee.equals("请先选择行业分会") || db.showQueryInfo(name) != null) {
+			//注册失败(用户已经存在或者输入信息不完善)
+			String failInfo = db.showQueryInfo(name)!=null?regFail2:regFail1;
+			
+			//送一个表示注册失败的cookie回去
+			Cookie regFailCookie = new Cookie("regFail",URLEncoder.encode(failInfo, "utf-8"));
+			regFailCookie.setPath("/");
+			regFailCookie.setMaxAge(864000);
+			response.addCookie(regFailCookie);
+			
+			//注册失败，重定向到注册页面
+			response.sendRedirect("../regist.jsp");
+			
 		}else{
 			//跳转至成功页面
 			try {
 				db.addUser(u);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			request.getSession().setAttribute("user", u);

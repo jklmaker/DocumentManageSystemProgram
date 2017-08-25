@@ -175,17 +175,6 @@ public class dbHelper {
 				
 				list.add(p);
 				
-//				Product product = new Product();
-//				/*person.setId(rs.getInt("id"));
-//				person.setAge(rs.getInt("age"));
-//				person.setName(rs.getString("name"));*/
-//				product.setPname(rs.getString("pname"));
-//				product.setPrice(rs.getInt("price"));
-//				product.setStoreQuantity(rs.getInt("quantity"));
-//				product.setType(rs.getString("type"));
-//				product.setPid(rs.getInt("pid"));
-//				
-//				list.add(product);	
 			}
 			
 		}catch(Exception e){
@@ -194,6 +183,96 @@ public class dbHelper {
 		return list;	
 	}
 	
+	public List<user> listUser() throws SQLException{
+		List<user> list = new ArrayList<user>();
+		Statement stmt = null;
+		ResultSet rs = null;
+		String sql = "select * from user";
+		
+		try{
+			//设置基本信息
+			Connection conn = this.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				user u = new user();
+				u.setUserType(rs.getInt("userType"));
+				u.setName(rs.getString("name"));
+				u.setSex(rs.getString("sex"));
+				u.setBirthday(rs.getString("birthday"));
+				u.setAddress(rs.getString("address"));
+				u.setTelephone(rs.getString("telephone"));
+				u.setInviter(rs.getString("inviter"));
+				u.setIndustryBranch(rs.getString("industryBranch"));
+				u.setSpecialCommittee(rs.getString("specialCommittee"));
+				u.setPassword(rs.getString("password"));
+				
+				list.add(u);
+				
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}	
+		return list;	
+	}
+	
+	public proposal showQueryInfoPlus(int proposalId){
+		proposal p = null;
+		ResultSet rs = null;
+		PreparedStatement preStmt = null;
+		String sql = "select * from proposal where proposalId=?";
+
+		try{
+			Connection conn = this.getConnection();
+			
+			preStmt = conn.prepareStatement(sql);
+			preStmt.setObject(1, proposalId);
+			
+			rs = preStmt.executeQuery();
+			
+			if(rs.first()){
+				
+				p = new proposal();
+				p.setAgree(rs.getInt("agree"));
+				p.setDisagree(rs.getInt("disagree"));
+				p.setAuthor(rs.getString("author"));
+				p.setContent(rs.getString("content"));
+				p.setDeadline(rs.getString("deadline"));
+				p.setProposalId(rs.getInt("proposalId"));
+				p.setState(rs.getInt("state"));
+				p.setTitle(rs.getString("title"));
+				
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
+	public boolean delProposal(int proposalId) throws SQLException {
+		Connection conn = null;
+		PreparedStatement preStmt = null;
+		String sql = "delete from proposal where proposalId=?";
+		if(showQueryInfoPlus(proposalId)==null)
+			return false;
+		else{
+			try {
+				conn = this.getConnection();
+				preStmt = conn.prepareStatement(sql);
+				preStmt.setInt(1, proposalId);
+				preStmt.executeUpdate();
+				preStmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return true;
+		}
+	}
+	
+	
 	public static void main(String[] args) {
 		dbHelper db = new dbHelper();
 		System.out.println("===");
@@ -201,11 +280,13 @@ public class dbHelper {
 		try {
 			System.out.println(db.getMaxProposalId());
 			System.out.println(db.listProposal().size());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(db.delProposal(3));
+			System.out.println("删除后:");
+			System.out.println(db.getMaxProposalId());
+			System.out.println(db.listProposal().size());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

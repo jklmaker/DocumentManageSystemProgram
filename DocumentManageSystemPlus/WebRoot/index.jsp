@@ -1,9 +1,25 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
+<%@ page import="java.net.URLDecoder" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
+<%
+  	request.setCharacterEncoding("utf-8");
+  	String loginFail = "";
+  	Cookie[] cookies = request.getCookies();
+  	if(cookies!=null && cookies.length>0) {
+      	for(Cookie c:cookies) {
+		     if(c.getName().equals("loginFail")) {
+		     	loginFail = URLDecoder.decode(c.getValue(),"utf-8");
+		     }
+		     c.setMaxAge(0);
+		     c.setPath("/");
+		     response.addCookie(c);
+      	}
+    }
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -18,9 +34,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+	<script type="text/javascript">
+		function alertLoginFail(){
+			var loginFailVar='<%=loginFail%>';
+			if(loginFailVar != "") {
+				alert(loginFailVar);
+			}
+		}
+	</script>
+	
   </head>
+
+  <body onload="alertLoginFail()">
   
-  <body>
+  
+  
     <form name="logForm" action="servlet/logServlet" method="post" >
     	<table>
 	    	<tr>
@@ -30,6 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	</tr>
     	</table>
     </form>
+    <hr>
     <a href="regist.jsp"><input type="button" value="注册" /></a>
   </body>
 </html>

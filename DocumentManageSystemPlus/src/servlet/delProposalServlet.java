@@ -10,19 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import util.dbHelper;
+public class delProposalServlet extends HttpServlet {
 
-import entity.manager;
-import entity.user;
-
-public class logServlet extends HttpServlet {
-
-	private String loginFail = "login fail";
-	
 	/**
 	 * Constructor of the object.
 	 */
-	public logServlet() {
+	public delProposalServlet() {
 		super();
 	}
 
@@ -62,37 +55,46 @@ public class logServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		System.out.println("===");
 
 		request.setCharacterEncoding("utf-8");	//设置编码
 		
-		String name = request.getParameter("name");		//接收从index.jsp传过来的用户名和密码
-		String password = request.getParameter("password");
+		//接收从regist.jsp传过来的用户信息
+		String testId = request.getParameter("testId");							//名字
 		
-		dbHelper db = new dbHelper();
-		
-		//登录成功：当且仅当数据库中有这个用户的信息且这个用户的密码与传入的相同
-		if(db.showQueryInfo(name)!=null && db.showQueryInfo(name).getPassword().equals(password)) {
-			//把注册成功的用户名保存在session中
-			user u = db.showQueryInfo(name);
+		if(testId!=null && testId.length()>0) {
+			//把表格里该行所表示的提案名称信息保存在cookie里
+			String proposalId = URLEncoder.encode(request.getParameter("testId"), "utf-8");
+			Cookie proposalIdCookie = new Cookie("proposalId",proposalId);
+			proposalIdCookie.setPath("/");
 			
-			request.getSession().setAttribute("user", u);
-			response.sendRedirect("../managerHome.jsp");	//登陆成功，重定向到管理员主页面
-		}else{
-			user u = new user();
-			u.setName("error");
-			request.getSession().setAttribute("user", u);
+			proposalIdCookie.setMaxAge(864000);
+			response.addCookie(proposalIdCookie);
 			
-			//送一个表示登陆失败的cookie回去
-			Cookie loginFailCookie = new Cookie("loginFail",URLEncoder.encode(loginFail, "utf-8"));
-			loginFailCookie.setPath("/");
-			loginFailCookie.setMaxAge(864000);
-			response.addCookie(loginFailCookie);
+			Cookie[] cookies = request.getCookies();
+			for(Cookie c:cookies) {
+				if(c.getName().equals("proposalTitle"))
+	            {
+	                c.setMaxAge(0); 			//设置Cookie失效
+	                response.addCookie(c); 		//重新保存。    
+	            }
+			}
 			
-			//登陆失败，重定向到登录页面
-			response.sendRedirect("../index.jsp");
+			//页面重定向
+			response.sendRedirect("../deleteProposal.jsp");
+		} else {
+			Cookie[] cookies = request.getCookies();
+			if(cookies!=null && cookies.length>0) {
+				for(Cookie c:cookies) {
+					if(c!=null && c.getName().equals("proposalId")) {
+						c.setMaxAge(0);
+						response.addCookie(c);
+					}
+				}
+			}
+			response.sendRedirect("../proposalQuery.jsp");
+			
 		}
+		
 	}
 
 	/**

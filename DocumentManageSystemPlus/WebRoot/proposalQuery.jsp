@@ -21,8 +21,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
+	
+	<script type="text/javascript">
+	</script>
   </head>
+  
+  <%
+  	request.setCharacterEncoding("utf-8");
+  	Cookie[] cookies = request.getCookies();
+  	if(cookies!=null&&cookies.length>0)
+      {
+           for(Cookie c:cookies)
+           {
+              if(c.getName().equals("proposalId"))
+              {
+                   c.setMaxAge(0); 			//设置Cookie失效
+                   response.addCookie(c); 	//重新保存
+              }
+           }
+      }
+   %>
   
   <body>
   	<%
@@ -46,390 +64,58 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		<td>撤销选项</td>
     	</tr>
     	<%
-    		amount--;
+    		for(int i=0;i<list.size();i++) {
+    			out.print("<tr>");
+    			
+    			out.print("<form action='servlet/delProposalServlet' method='post'>");
+    			
+    			//编号
+    			out.print("<td>");
+    			str = String.valueOf(list.get(i).getProposalId()); 
+	    		out.print(str);
+	    //		out.print("<input id='testId' type='text' name='testName' readonly='readonly' value='demo' />");
+	    		out.print("<input id='testId' type='text' name='testId' readonly='readonly' value='"+str+"' />");
+    			out.print("</td>");
+    			//提案名称
+    			out.print("<td>");
+    			str = String.valueOf(list.get(i).getTitle()); 
+	    		out.print(str);
+    			out.print("</td>");
+    			//作者
+    			out.print("<td>");
+    			str = String.valueOf(list.get(i).getAuthor()); 
+	    		out.print(str);
+    			out.print("</td>");
+    			//截止日期
+    			out.print("<td>");
+    			str = String.valueOf(list.get(i).getDeadline()); 
+	    		out.print(str);
+    			out.print("</td>");
+    			//状态
+    			out.print("<td>");
+    			str = String.valueOf(list.get(i).getState()); 
+	    		out.print(str);
+    			out.print("</td>");
+    			//附议数
+    			out.print("<td>");
+    			str = String.valueOf(list.get(i).getAgree()); 
+	    		out.print(str);
+    			out.print("</td>");
+    			//反对数
+    			out.print("<td>");
+    			str = String.valueOf(list.get(i).getDisagree()); 
+	    		out.print(str);
+    			out.print("</td>");
+    			//撤销选项
+    			out.print("<td>");
+    			out.print("<input type='submit' value='撤销' />");
+    			out.print("</td>");
+    			
+    			out.print("</form>");
+    			
+    			out.print("</tr>");
+    		}
     	 %>
-    	<tr>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getProposalId()); 
-    					out.print(str);  					
-    				}
-    			 %>
-    			 
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getTitle();
-    					out.print(str);  					
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getAuthor();
-    					out.print(str); 
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getDeadline();
-    					out.print(str); 
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getState());
-    					out.print(str);  
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getAgree());
-    					out.print(str);  
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getDisagree());
-    					out.print(str);  
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<input type="button" value="撤销" />
-    		</td>
-    	</tr>
-    	    	<%
-    		amount--;
-    	 %>
-    	<tr>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getProposalId());
-    					out.print(str);     					
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getTitle();
-    					out.print(str);   					
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getAuthor();
-    					out.print(str); 
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getDeadline();
-    					out.print(str); 
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getState());
-    					out.print(str);  
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getAgree()); 
-    					out.print(str); 
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getDisagree()); 
-    					out.print(str); 
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<input type="button" value="撤销" />
-    		</td>
-    	</tr>
-    	    	<%
-    		amount--;
-    	 %>
-    	<tr>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getProposalId());   
-    					out.print(str); 					
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getTitle();   		
-    					out.print(str);			
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getAuthor();
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getDeadline();
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getState()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getAgree()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getDisagree()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<input type="button" value="撤销" />
-    		</td>
-    	</tr>
-    	    	<%
-    		amount--;
-    	 %>
-    	<tr>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getProposalId());
-    					out.print(str);    					
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getTitle();   
-    					out.print(str);					
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getAuthor();
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getDeadline();
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getState()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getAgree()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getDisagree()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<input type="button" value="撤销" />
-    		</td>
-    	</tr>
-    	    	<%
-    		amount--;
-    	 %>
-    	<tr>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getProposalId());   
-    					out.print(str); 					
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getTitle();   			
-    					out.print(str);		
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getAuthor();
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getDeadline();
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getState()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getAgree()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getDisagree()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<input type="button" value="撤销" />
-    		</td>
-    	</tr>
-    	    	<%
-    		amount--;
-    	 %>
-    	<tr>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getProposalId()); 
-    					out.print(str);   					
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getTitle();   				
-    					out.print(str);	
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getAuthor();
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = list.get(amount).getDeadline();
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getState()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getAgree()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<%
-    				if(amount>0) {
-    					str = String.valueOf(list.get(amount).getDisagree()); 
-    					out.print(str);
-    				}
-    			 %>
-    		</td>
-    		<td>
-    			<input type="button" value="撤销" />
-    		</td>
-    	</tr>
     </table>
   </body>
 </html>
