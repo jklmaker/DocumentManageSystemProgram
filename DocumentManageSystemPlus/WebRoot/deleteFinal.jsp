@@ -1,3 +1,4 @@
+<%@page import="entity.user"%>
 <%@page import="util.dbHelper"%>
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
 <%
@@ -20,7 +21,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
+	<link href="css/Template.css" rel="stylesheet" type="text/css" />
+	<link href="css/CustomButton.css" rel="stylesheet" type="text/css" />
   </head>
   
   <%
@@ -38,12 +40,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               }
            }
       }
+      
+      user u = (user)request.getSession().getAttribute("user");
+      String myURL = "#";
+      if(u.getUserType() == 0) {
+      	myURL = "authorHome.jsp";
+      } else if(u.getUserType() == 1) {
+      	myURL = "managerHome.jsp";
+      }
    %>
   
   <body>
-    <h1>提案已被撤销</h1>
-    <hr>
-    <a href="proposalQuery.jsp"><input type="button" value="回到提案查询页面"/></a><br>
-    <a href="managerHome.jsp"><input type="button" value="回到主页面"/></a><br>
+  	<jsp:useBean  id="user" class="entity.user" scope="session"/>
+	<div class="header">
+		<div class="header-tip">
+			<p align="right"><font color="#FF9900">欢迎您:<jsp:getProperty name="user" property="name"/><a href="exit.jsp"><input type="button" value="注销" class="mybtn" onclick="return confirm('真的要注销吗')"></a></font></p>
+		</div>
+		<div class="header-main">
+			<h2>能力规范文稿管理系统</h2>
+		</div>
+	</div>
+	<div class="content-left">
+		<h2 align="center"><font color="#FF9900">提案已被撤销</font></h2>
+	</div>
+	<div class="content-right">
+		
+		<a href="proposalQuery.jsp"><input type="button" value="回到提案查询页面" class="mybtn" style="width: 300px"/></a><br>
+    	<a href=<%=myURL %>><input type="button" value="回到主页面" class="mybtn" style="width: 300px"/></a><br>
+	</div>
+  	
+  
+  
+  
+  
+
+    
   </body>
 </html>

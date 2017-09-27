@@ -1,0 +1,33 @@
+@CHARSET "UTF-8";
+body{
+	margin: 0px;
+	padding: 0px;
+}
+
+.header{
+	border:1px solid #FFFFCC;
+	background-color: #FFFFCC;
+ 	height: 120px;
+}
+.header-tip{
+	background-color: #FFFFCC;
+	height: 25%;
+	padding-right: 20px;
+}
+.header-main{
+	height: 75%;
+	text-align: center;
+	color: #FF9900;
+}
+.content-left{
+	background-color: #FFCC99;
+	float: left;
+	width: 20%;
+	height: 400px;
+}
+.content-right{
+	background-color: #f2eada;
+	float: right;
+	width: 80%;
+	height: 400px;
+}

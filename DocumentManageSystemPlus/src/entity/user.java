@@ -6,7 +6,7 @@ package entity;
  */
 public class user {
 
-	private int userType;		//0为写者，1为管理员
+	private int userType;		//0为写者，1为管理员,2为正在审核中的写者
 	
 	private String name;		//名字
 	private String sex;			//性别

@@ -78,9 +78,12 @@ public class regServlet extends HttpServlet {
 		String specialCommittee = request.getParameter("specialCommittee");	//专委会
 		
 		user u = new user(name, sex, birthday, address, telephone, industryBranch, specialCommittee, password);
-		u.setUserType(1);
-		
+		u.setUserType(2);		//重要:注册成功后，是未被审核的写者
+
 		if(inviter != null) {
+			if(inviter.equals("请选择")){
+				inviter = "";
+			}
 			u.setInviter(inviter);
 		}
 		
@@ -101,7 +104,10 @@ public class regServlet extends HttpServlet {
 		}else{
 			//跳转至成功页面
 			try {
+				//user表中添加此人的信息
 				db.addUser(u);
+				//apply表中添加此人及推荐人的信息
+				db.addApply(u.getName(), u.getInviter());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

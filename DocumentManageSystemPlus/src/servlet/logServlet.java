@@ -62,8 +62,7 @@ public class logServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		System.out.println("===");
+		int flag=0;
 
 		request.setCharacterEncoding("utf-8");	//设置编码
 		
@@ -72,26 +71,48 @@ public class logServlet extends HttpServlet {
 		
 		dbHelper db = new dbHelper();
 		
-		//登录成功：当且仅当数据库中有这个用户的信息且这个用户的密码与传入的相同
-		if(db.showQueryInfo(name)!=null && db.showQueryInfo(name).getPassword().equals(password)) {
-			//把注册成功的用户名保存在session中
-			user u = db.showQueryInfo(name);
-			
-			request.getSession().setAttribute("user", u);
-			response.sendRedirect("../managerHome.jsp");	//登陆成功，重定向到管理员主页面
-		}else{
-			user u = new user();
-			u.setName("error");
-			request.getSession().setAttribute("user", u);
-			
+		user u = db.showQueryInfo(name);
+		
+		if(u==null) {
+			//说明用户名不存在
+			loginFail = "The username you input is not existed";
+			flag = 1;
+		}
+		if(u!=null && !u.getPassword().equals(password)) {
+			//用户名存在，密码输错了
+			loginFail = "The password you input is invalid";
+			flag = 1;
+		}
+//		if(u!=null && u.getPassword().equals(password) && u.getUserType()==2) {
+//			//用户名密码均正确，但未被审核
+//			loginFail = "The user is not checked";
+//			flag = 1;
+//		}
+		
+		if(flag == 0){		//flag为0，表示符合要求，登录成功
+			request.getSession().setAttribute("user", u);			
+			//登录成功，根据用户的类型重定向到相应的页面
+			if(u.getUserType() == 0) {
+				//0为写者
+				response.sendRedirect("../authorHome.jsp");
+			}else if(u.getUserType() == 1) {
+				//1为管理员
+				response.sendRedirect("../managerHome.jsp");
+			}else if(u.getUserType() == 2) {
+				//2为未审核的写者
+				response.sendRedirect("../uncheckedUserHome.jsp");
+			}
+		}else{				//flag为1，表示登录失败
 			//送一个表示登陆失败的cookie回去
 			Cookie loginFailCookie = new Cookie("loginFail",URLEncoder.encode(loginFail, "utf-8"));
 			loginFailCookie.setPath("/");
 			loginFailCookie.setMaxAge(864000);
 			response.addCookie(loginFailCookie);
 			
+			System.out.println("servlet的cookie数:"+request.getCookies().length);
+			
 			//登陆失败，重定向到登录页面
-			response.sendRedirect("../index.jsp");
+			response.sendRedirect("../index.jsp");			
 		}
 	}
 

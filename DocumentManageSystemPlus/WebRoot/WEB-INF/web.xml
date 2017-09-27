@@ -35,6 +35,62 @@
     <servlet-name>delProposalServlet</servlet-name>
     <servlet-class>servlet.delProposalServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>checkOperation</servlet-name>
+    <servlet-class>servlet.checkOperation</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>addApplyInfo</servlet-name>
+    <servlet-class>servlet.addApplyInfo</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>addRecommendInfo</servlet-name>
+    <servlet-class>servlet.addRecommendInfo</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>verifyUser</servlet-name>
+    <servlet-class>servlet.verifyUser</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>commentProposal</servlet-name>
+    <servlet-class>servlet.commentProposal</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>recommendProposalOperation</servlet-name>
+    <servlet-class>servlet.recommendProposalOperation</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>recordProposalOperation</servlet-name>
+    <servlet-class>servlet.recordProposalOperation</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>buildProposalOperation</servlet-name>
+    <servlet-class>servlet.buildProposalOperation</servlet-class>
+  </servlet>
+
+
+
+
+
+
+
+
 
 
 
@@ -59,6 +115,38 @@
   <servlet-mapping>
     <servlet-name>delProposalServlet</servlet-name>
     <url-pattern>/servlet/delProposalServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>checkOperation</servlet-name>
+    <url-pattern>/servlet/checkOperation</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>addApplyInfo</servlet-name>
+    <url-pattern>/servlet/addApplyInfo</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>addRecommendInfo</servlet-name>
+    <url-pattern>/servlet/addRecommendInfo</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>verifyUser</servlet-name>
+    <url-pattern>/servlet/verifyUser</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>commentProposal</servlet-name>
+    <url-pattern>/servlet/commentProposal</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>recommendProposalOperation</servlet-name>
+    <url-pattern>/servlet/recommendProposalOperation</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>recordProposalOperation</servlet-name>
+    <url-pattern>/servlet/recordProposalOperation</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>buildProposalOperation</servlet-name>
+    <url-pattern>/servlet/buildProposalOperation</url-pattern>
   </servlet-mapping>	
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>

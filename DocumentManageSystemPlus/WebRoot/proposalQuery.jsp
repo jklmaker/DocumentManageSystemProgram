@@ -1,5 +1,5 @@
 <%@page import="util.dbHelper"%>
-<%@page import="entity.proposal"%>
+<%@page import="entity.*"%>
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
 <%
 String path = request.getContextPath();
@@ -21,7 +21,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	
+	<link href="css/Template.css" rel="stylesheet" type="text/css" />
+	<link href="css/CustomButton.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
 	</script>
   </head>
@@ -49,9 +50,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		int amount = list.size();
   		String str = "";
   	 %>
-    <h1>提案查询</h1>
-    <hr>
-    <table border="1px" cellpadding="0px" cellspacing="0px">
+  	 
+  	 <jsp:useBean  id="user" class="entity.user" scope="session"/>
+  	<div class="header">
+  		<div class="header-tip">
+  			<p align="right"><font color="#FF9900">欢迎您:<jsp:getProperty name="user" property="name"/><a href="exit.jsp"><input type="button" value="注销" class="mybtn" onclick="return confirm('真的要注销吗')"></a></font></p>
+  		</div>
+  		<div class="header-main">
+  			<h2>能力规范文稿管理系统</h2>
+  		</div>
+  	</div>
+  	<div class="content-left">
+  		<h2 align="center"><font color="#FF9900">提案查询</font></h2>
+  	</div>
+  	<div class="content-right">
+	  	<table border="1px" cellpadding="0px" cellspacing="0px">
     	<tr>
     		<!-- 表头 -->
     		<td>编号</td>
@@ -62,6 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		<td>附议数</td>
     		<td>反对数</td>
     		<td>撤销选项</td>
+    		<td>查看详情</td>
     	</tr>
     	<%
     		for(int i=0;i<list.size();i++) {
@@ -73,8 +87,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     			out.print("<td>");
     			str = String.valueOf(list.get(i).getProposalId()); 
 	    		out.print(str);
-	    //		out.print("<input id='testId' type='text' name='testName' readonly='readonly' value='demo' />");
-	    		out.print("<input id='testId' type='text' name='testId' readonly='readonly' value='"+str+"' />");
+	    		out.print("<input id='testId' type='hidden' name='testId' readonly='readonly' value='"+str+"' />");
     			out.print("</td>");
     			//提案名称
     			out.print("<td>");
@@ -108,14 +121,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     			out.print("</td>");
     			//撤销选项
     			out.print("<td>");
-    			out.print("<input type='submit' value='撤销' />");
+    			out.print("<input type='submit' value='撤销' class='mybtn' />");
     			out.print("</td>");
     			
     			out.print("</form>");
+    			
+    			//查看详情选项
+    			out.print("<td>");
+    			out.print("<form action='getProposalDetail.jsp' method='post'>");
+    			out.print("<input type='hidden' name='getProposalDetail' value='"+String.valueOf(list.get(i).getProposalId())+"'>");
+    			out.print("<input type='submit' value='查看详情' class='mybtn' style='width:140px' />");
+    			out.print("</form>");
+    			out.print("</td>");
     			
     			out.print("</tr>");
     		}
     	 %>
     </table>
+    <%
+    	user u = (user)request.getSession().getAttribute("user");
+		String myURL = "#";
+		if(u.getUserType() == 0) {
+		myURL = "authorHome.jsp";
+		} else if(u.getUserType() == 1) {
+		myURL = "managerHome.jsp";
+		}
+     %>
+     	<hr>
+    	<a href=<%=myURL %>><input type="button" value="返回主页面" class="mybtn" style="width: 220px;"></a>
+  	</div>
+    
   </body>
 </html>

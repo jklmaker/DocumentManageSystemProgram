@@ -81,8 +81,12 @@ public class proposalDefineServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		response.sendRedirect("../managerHome.jsp");	//重定向到管理员主页面
-		
+		//根据不同的身份重定向到不同的页面
+		if(u.getUserType() == 0) {
+			response.sendRedirect("../authorHome.jsp");	//重定向到写者主页面
+		}else if(u.getUserType() == 1) {
+			response.sendRedirect("../managerHome.jsp");	//重定向到管理员主页面
+		}
 //		String name = request.getParameter("name");		//接收从index.jsp传过来的用户名和密码
 //		String password = request.getParameter("password");
 	}

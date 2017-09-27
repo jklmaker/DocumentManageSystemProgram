@@ -21,7 +21,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
+	<link href="css/Template.css" rel="stylesheet" type="text/css" />
+	<link href="css/CustomButton.css" rel="stylesheet" type="text/css" />
   </head>
   
   <body>
@@ -31,9 +32,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		int amount = list.size();
   		String str = "";
   	 %>
-    <h1>信息维护</h1>
-    <hr>
-    <table border="1px" cellpadding="0px" cellspacing="0px"> 
+  	 <jsp:useBean  id="user" class="entity.user" scope="session"/>
+	<div class="header">
+		<div class="header-tip">
+			<p align="right"><font color="#FF9900">欢迎您:<jsp:getProperty name="user" property="name"/><a href="exit.jsp"><input type="button" value="注销" class="mybtn" onclick="return confirm('真的要注销吗')"></a></font></p>
+		</div>
+		<div class="header-main">
+			<h2>能力规范文稿管理系统</h2>
+		</div>
+	</div>
+	<div class="content-left">
+		<h2 align="center"><font color="#FF9900">信息维护</font></h2>
+	</div>
+	<div class="content-right">
+		<table border="1px" cellpadding="0px" cellspacing="0px"> 
     	<tr>
     		<td>用户属性</td>
     		<td>名字</td>
@@ -93,5 +105,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		}
     	 %>
     </table>
+    <%
+    	user u = (user)request.getSession().getAttribute("user");
+		String myURL = "#";
+		if(u.getUserType() == 0) {
+		myURL = "authorHome.jsp";
+		} else if(u.getUserType() == 1) {
+		myURL = "managerHome.jsp";
+		}
+     %>
+     <hr>
+     <a href=<%=myURL %>><input type="button" value="返回主页面" class="mybtn" style="width: 220px;"></a>
+	</div>
+  	 
+  	 
+  	 
+
+    
   </body>
 </html>
